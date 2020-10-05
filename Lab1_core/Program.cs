@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Numerics;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace Lab1_core
 {
@@ -54,7 +56,10 @@ namespace Lab1_core
             public abstract Complex[] NearAverage(float eps);
             public abstract string ToLongString();
             
-            //ToString
+            public override string ToString()
+            {
+                return "";
+            }
 
         }
 
@@ -84,15 +89,71 @@ namespace Lab1_core
                 {
                     for (int j = 0; j < Oy.Length; j++)
                     {
-                        Node[i, j] = rnd.NextDouble() * (maxValue - minValue);
+                        Node[i, j] = new Complex(rnd.NextDouble() * (maxValue - minValue), rnd.NextDouble() * (maxValue - minValue));
                     }
                 }
             } 
 
             //V2DataCollection
+
+            public override Complex[] NearAverage(float eps)
+            {
+                int N = Ox.Length * Oy.Length;
+                double sum = 0;
+                //Complex[] ret = new Complex[]();
+                for (int i = 0; i < Ox.Length; i++)
+                {
+                    for (int j = 0; j < Oy.Length; j++)
+                    {
+                        sum += Node[i, j].Real;
+                    }
+                }
+
+                double average = sum / N;
+                int count = 0;
+                for (int i = 0; i < Ox.Length; i++)
+                {
+                    for (int j = 0; j < Oy.Length; j++)
+                    {
+                        if (Math.Abs(Node[i,j].Real - average) < eps) {
+                            count++;
+                        }
+                    }
+                }
+
+                Complex[] ret = new Complex[count];
+                count = 0;
+                for (int i = 0; i < Ox.Length; i++)
+                {
+                    for (int j = 0; j < Oy.Length; j++)
+                    {
+                        if (Math.Abs(Node[i, j].Real - average) < eps)
+                        {
+                            ret[count++] = Node[i, j];
+                        }
+                    }
+                }
+
+                return ret;
+            }
+
+            public override string ToString()
+            {
+                return "";
+            }
+
+            public override string ToLongString()
+            {
+                return this.ToString();
+            }
         }
 
-        class V2DataCollection : V2Data { }
+        class V2DataCollection : V2Data
+        {
+            List<DataItem> dataItems { get; set; }
+
+            public V2DataCollection(string info, double freq) : base(info, freq) { }
+        }
 
         class V2MainCollection { }
         static void Main(string[] args)
