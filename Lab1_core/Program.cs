@@ -58,7 +58,7 @@ namespace Lab1_core
             
             public override string ToString()
             {
-                return "";
+                return "Info: " + Info + " Frequency: " + Freq.ToString();
             }
 
         }
@@ -69,20 +69,16 @@ namespace Lab1_core
             public Grid1D[] Oy { get; set; }
             public Complex[,] Node { get; set; }
 
-            public V2DataOnGrid (Grid1D[] ox, Grid1D[] oy, string info, double freq) : base(info, freq)
+            public V2DataOnGrid (string info, double freq) : base(info, freq)
             {
                 Info = info;
                 Freq = freq;
-                Ox = new Grid1D[ox.Length];
-                Ox = (Grid1D[])ox.Clone();              //!!!
-
-                Oy = new Grid1D[oy.Length];
-                Oy = (Grid1D[])oy.Clone();              //!!!
+               
             }
 
             public void initRandom(double minValue, double maxValue)
             {
-                Node = new Complex[Ox.Length, Oy.Length];
+                Complex[,] Node = new Complex[Ox.Length, Oy.Length];
                 Random rnd = new Random();
                 
                 for (int i = 0; i < Ox.Length; i++)
@@ -94,7 +90,12 @@ namespace Lab1_core
                 }
             } 
 
-            //V2DataCollection
+            /*
+            public V2DataCollection()
+            {
+
+            }
+            */
 
             public override Complex[] NearAverage(float eps)
             {
@@ -150,15 +151,150 @@ namespace Lab1_core
 
         class V2DataCollection : V2Data
         {
-            List<DataItem> dataItems { get; set; }
+            public List<DataItem> dataItems { get; set; }
 
-            public V2DataCollection(string info, double freq) : base(info, freq) { }
+            public V2DataCollection(string info, double freq) : base(info, freq) {
+                Info = info;
+                Freq = freq;
+            }
+
+            public void initRandom(int nItems, float xmax, float ymax, double minValue, double maxValue)
+            {
+                //DataItem item = new DataItem();
+                //Vector2 bufVec;
+                //Complex bufCompl;
+
+                dataItems = new List<DataItem>();
+                Random rnd = new Random();
+                for (int i = 0; i < nItems; i++)
+                {
+                    //bufVec.X = (float)rnd.NextDouble() * xmax;
+                    //bufVec.Y = (float)rnd.NextDouble() * ymax;
+                    //item.Vector = new Vector2((float)rnd.NextDouble() * xmax, (float)rnd.NextDouble() * ymax);
+                    //item.Complex
+
+                    dataItems.Add(new DataItem()
+                    {
+                        Vector = new Vector2((float)rnd.NextDouble() * xmax, (float)rnd.NextDouble() * ymax),
+                        Complex = new Complex(rnd.NextDouble() * (maxValue - minValue), rnd.NextDouble() * (maxValue - minValue))
+                    });
+                }
+            }
+
+            public override Complex[] NearAverage(float eps)
+            {
+                //throw new NotImplementedException();
+                int count = 0;
+                double sum = 0;
+                foreach(DataItem item in dataItems)
+                {
+                    sum += item.Complex.Real;
+                }
+
+                double average = sum / dataItems.Count;
+
+                foreach (DataItem item in dataItems)
+                {
+                    if (Math.Abs(item.Complex.Real - average) < eps)
+                    {
+                        count++;
+                    }
+                }
+
+                Complex[] ret = new Complex[count];
+                count = 0;
+                foreach (DataItem item in dataItems)
+                {
+                    if (Math.Abs(item.Complex.Real - average) < eps)
+                    {
+                        ret[count++] = item.Complex;
+                    }
+                }
+
+                return ret;
+            }
+
+            public override string ToString()
+            {
+                return "";
+            }
+
+            public override string ToLongString()
+            {
+                return this.ToString();
+            }
         }
 
-        class V2MainCollection { }
+        class V2MainCollection /* : IEnumerable<V2Data> */ {
+            private List<V2Data> v2Datas;
+
+            public int Count 
+            {
+                get { return v2Datas.Count; }
+            }
+
+            public void Add(V2Data item)
+            {
+                v2Datas.Add(item);
+            }
+
+            public bool Remove (string id, double w)
+            {
+                bool flag = false;
+                foreach(V2Data data in v2Datas)
+                {
+                    if (data.Freq == w && data.Info == id)
+                    {
+                        v2Datas.Remove(data);
+                        flag = true;
+                    }
+                }
+
+                return flag;
+            }
+
+            public void AddDefaults()
+            {
+                V2DataOnGrid[] grid = new V2DataOnGrid[3];
+                V2DataCollection[] collections = new V2DataCollection[3];
+
+                for (int i = 0; i < 3; i++)
+                {
+                    grid[i] = new V2DataOnGrid("data info" + i.ToString(), i);
+                    collections[i] = new V2DataCollection("collection info" + i.ToString(), i);
+
+                }
+
+                for (int i = 0; i < 3; i++)
+                {
+                    grid[i].initRandom(0, 100);
+                    collections[i].initRandom(4, 100, 100, 0, 100);
+                    v2Datas.Add(grid[i]);
+                    v2Datas.Add(collections[i]);
+                }
+            }
+
+            public override string ToString()
+            {
+                string ret = "";
+                foreach(V2Data data in v2Datas)
+                {
+                    ret += (data.ToString() + '\n');
+                }
+                return ret;
+            }
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
+            //V2DataCollection dataCollection = new V2DataCollection("info", 1.23);
+            //dataCollection.
+
+            V2MainCollection mainCollection = new V2MainCollection();
+            mainCollection.AddDefaults();
+            Console.WriteLine(mainCollection.ToString());
         }
     }
 }
