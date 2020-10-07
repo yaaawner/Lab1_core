@@ -123,7 +123,7 @@ namespace Lab1_core
                 {
                     for (int j = 0; j < val.Grids[1].Num; j++)
                     {
-                        ret.dataItems.Add(new DataItem(new Vector2(i, j), val.Node[i, j]));
+                        ret.dataItems.Add(new DataItem(new Vector2((i + 1) * val.Grids[0].Step, (j + 1) * val.Grids[1].Step), val.Node[i, j]));
                     }
                 }
 
@@ -201,6 +201,7 @@ namespace Lab1_core
             public List<DataItem> dataItems { get; set; }
 
             public V2DataCollection(string info, double freq) : base(info, freq) {
+                dataItems = new List<DataItem>();
                 Info = info;
                 Freq = freq;
             }
@@ -366,6 +367,19 @@ namespace Lab1_core
             //V2DataCollection dataCollection = new V2DataCollection("info", 1.23);
             //dataCollection.
 
+            /* 1 */
+            Grid1D x = new Grid1D(10, 10);
+            Grid1D y = new Grid1D(5, 10);
+            V2DataOnGrid test = new V2DataOnGrid("test", 100, x, y);
+            test.initRandom(0, 100);
+            Console.WriteLine(test.ToLongString());
+
+            Console.WriteLine("\n\n ========== OPERATOR ========== \n\n");
+
+            V2DataCollection collection = (V2DataCollection)test;
+            Console.WriteLine(collection.ToLongString());
+
+
             /* 2 */
             V2MainCollection mainCollection = new V2MainCollection();
             mainCollection.AddDefaults();
@@ -373,16 +387,20 @@ namespace Lab1_core
             // Console.WriteLine(mainCollection.ToLongString());
 
             /* test */
+            /*
             Grid1D x = new Grid1D(10, 10);
             Grid1D y = new Grid1D(5, 10);
             V2DataOnGrid test = new V2DataOnGrid("test", 100, x, y);
             test.initRandom(0, 100);
             Console.WriteLine(test.ToLongString());
+            */
 
             /*test2*/
+            /*
             V2DataCollection test2 = new V2DataCollection("test2", 100);
             test2.initRandom(10, 100, 100, 0, 100);
             Console.WriteLine(test2.ToLongString());
+            */
         }
     }
 }
