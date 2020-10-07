@@ -115,6 +115,21 @@ namespace Lab1_core
             }
             */
 
+            public static explicit operator V2DataCollection(V2DataOnGrid val)
+            {
+                V2DataCollection ret = new V2DataCollection(val.Info, val.Freq);
+
+                for (int i = 0; i < val.Grids[0].Num; i++)
+                {
+                    for (int j = 0; j < val.Grids[1].Num; j++)
+                    {
+                        ret.dataItems.Add(new DataItem(new Vector2(i, j), val.Node[i, j]));
+                    }
+                }
+
+                return ret;
+            }
+
             public override Complex[] NearAverage(float eps)
             {
                 int N = Grids[0].Num * Grids[1].Num;
