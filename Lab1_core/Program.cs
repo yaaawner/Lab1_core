@@ -176,7 +176,7 @@ namespace Lab1_core
                     ret = ret + "\n";
                 }
 
-                return "Type: 2DataOnGrid Base: Info: " + Info.ToString() + " Freq: " + Freq.ToString() /*ToString()*/
+                return "Type: 2DataOnGrid Base: Info: " + Info + " Freq: " + Freq.ToString() /*ToString()*/
                     + " Ox: " + Grids[0].ToString() + " Oy: " + Grids[1].ToString() + "\n" + ret;
             }
         }
@@ -248,7 +248,8 @@ namespace Lab1_core
 
             public override string ToString()
             {
-                return "lalalal";
+                return "Type: V2DataCollection Base: info " + Info + " freq " + Freq.ToString()
+                        + " Count: " + dataItems.Count.ToString();
             }
 
             public override string ToLongString()
