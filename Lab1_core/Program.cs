@@ -266,7 +266,7 @@ namespace Lab1_core
             }
         }
 
-        class V2MainCollection /* : IEnumerable<V2Data> */ {
+        class V2MainCollection : IEnumerable<V2Data> {
             private List<V2Data> v2Datas;
 
             public int Count 
@@ -327,6 +327,21 @@ namespace Lab1_core
                 }
                 return ret;
             }
+
+            public IEnumerator<V2Data> GetEnumerator()
+            {
+                return ((IEnumerable<V2Data>)v2Datas).GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return ((IEnumerable)v2Datas).GetEnumerator();
+            }
+
+            //public IEnumerator GetEnumerator()
+            //{
+            //return ((IEnumerable)v2Datas).GetEnumerator();
+            //}
         }
 
         static void Main(string[] args)
