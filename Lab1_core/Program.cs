@@ -65,25 +65,43 @@ namespace Lab1_core
 
         class V2DataOnGrid : V2Data
         {
-            public Grid1D[] Ox { get; set; }
-            public Grid1D[] Oy { get; set; }
+
+            //public Grid1D Ox { get; set; }
+            //public Grid1D Oy { get; set; }
+
+            public Grid1D[] Grids { get; set; } /* { get; AppDomainSetup; } */
+
+            /*
+            public Grid1D Ox 
+            { 
+                get { return grids[0];  }
+                set { grids[0] = value; } 
+            }
+
+            public Grid1D Oy
+            {
+                get { return grids[1]; }
+                set { grids[1] = value; }
+            }
+            */
+
             public Complex[,] Node { get; set; }
 
-            public V2DataOnGrid (string info, double freq) : base(info, freq)
+            public V2DataOnGrid (string info, double freq, Grid1D ox, Grid1D oy) : base(info, freq)
             {
                 Info = info;
                 Freq = freq;
-               
+                Grids = new Grid1D[2] { ox, oy };
             }
 
             public void initRandom(double minValue, double maxValue)
             {
-                Complex[,] Node = new Complex[Ox.Length, Oy.Length];
+                Complex[,] Node = new Complex[Grids[0].Num, Grids[1].Num];
                 Random rnd = new Random();
                 
-                for (int i = 0; i < Ox.Length; i++)
+                for (int i = 0; i < Grids[0].Num; i++)
                 {
-                    for (int j = 0; j < Oy.Length; j++)
+                    for (int j = 0; j < Grids[1].Num; j++)
                     {
                         Node[i, j] = new Complex(rnd.NextDouble() * (maxValue - minValue), rnd.NextDouble() * (maxValue - minValue));
                     }
@@ -99,12 +117,12 @@ namespace Lab1_core
 
             public override Complex[] NearAverage(float eps)
             {
-                int N = Ox.Length * Oy.Length;
+                int N = Grids[0].Num * Grids[1].Num;
                 double sum = 0;
                 //Complex[] ret = new Complex[]();
-                for (int i = 0; i < Ox.Length; i++)
+                for (int i = 0; i < Grids[0].Num; i++)
                 {
-                    for (int j = 0; j < Oy.Length; j++)
+                    for (int j = 0; j < Grids[1].Num; j++)
                     {
                         sum += Node[i, j].Real;
                     }
@@ -112,9 +130,9 @@ namespace Lab1_core
 
                 double average = sum / N;
                 int count = 0;
-                for (int i = 0; i < Ox.Length; i++)
+                for (int i = 0; i < Grids[0].Num; i++)
                 {
-                    for (int j = 0; j < Oy.Length; j++)
+                    for (int j = 0; j < Grids[1].Num; j++)
                     {
                         if (Math.Abs(Node[i,j].Real - average) < eps) {
                             count++;
@@ -124,9 +142,9 @@ namespace Lab1_core
 
                 Complex[] ret = new Complex[count];
                 count = 0;
-                for (int i = 0; i < Ox.Length; i++)
+                for (int i = 0; i < Grids[0].Num; i++)
                 {
-                    for (int j = 0; j < Oy.Length; j++)
+                    for (int j = 0; j < Grids[1].Num; j++)
                     {
                         if (Math.Abs(Node[i, j].Real - average) < eps)
                         {
@@ -140,12 +158,12 @@ namespace Lab1_core
 
             public override string ToString()
             {
-                return "";
+                return "lalal";
             }
 
             public override string ToLongString()
             {
-                return this.ToString();
+                return "alalalla";
             }
         }
 
@@ -216,12 +234,12 @@ namespace Lab1_core
 
             public override string ToString()
             {
-                return "";
+                return "lalalal";
             }
 
             public override string ToLongString()
             {
-                return this.ToString();
+                return "lalalala";
             }
         }
 
@@ -255,12 +273,15 @@ namespace Lab1_core
 
             public void AddDefaults()
             {
+                Grid1D Ox = new Grid1D(10, 10);
+                Grid1D Oy = new Grid1D(10, 10);
+                v2Datas = new List<V2Data>();
                 V2DataOnGrid[] grid = new V2DataOnGrid[3];
                 V2DataCollection[] collections = new V2DataCollection[3];
 
                 for (int i = 0; i < 3; i++)
                 {
-                    grid[i] = new V2DataOnGrid("data info" + i.ToString(), i);
+                    grid[i] = new V2DataOnGrid("data info" + i.ToString(), i, Ox, Oy);
                     collections[i] = new V2DataCollection("collection info" + i.ToString(), i);
 
                 }
@@ -292,6 +313,7 @@ namespace Lab1_core
             //V2DataCollection dataCollection = new V2DataCollection("info", 1.23);
             //dataCollection.
 
+            /* 2 */
             V2MainCollection mainCollection = new V2MainCollection();
             mainCollection.AddDefaults();
             Console.WriteLine(mainCollection.ToString());
