@@ -384,6 +384,18 @@ namespace Lab1_core
             V2MainCollection mainCollection = new V2MainCollection();
             mainCollection.AddDefaults();
             Console.WriteLine(mainCollection.ToString());
+
+            /* 3 */
+            Complex[] c;// = new Complex[];
+            foreach (V2Data item in mainCollection)
+            {
+                c = item.NearAverage(10);
+                for (int i = 0; i < c.Length; i++)
+                {
+                    Console.WriteLine(c[i].ToString());
+                }
+            } 
+
             // Console.WriteLine(mainCollection.ToLongString());
 
             /* test */
