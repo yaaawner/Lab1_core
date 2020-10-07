@@ -96,7 +96,7 @@ namespace Lab1_core
 
             public void initRandom(double minValue, double maxValue)
             {
-                Complex[,] Node = new Complex[Grids[0].Num, Grids[1].Num];
+                Node = new Complex[Grids[0].Num, Grids[1].Num];
                 Random rnd = new Random();
                 
                 for (int i = 0; i < Grids[0].Num; i++)
@@ -158,12 +158,26 @@ namespace Lab1_core
 
             public override string ToString()
             {
-                return "lalal";
+                return "Type: 2DataOnGrid Base: Info: " + Info.ToString() + " Freq: " + Freq.ToString() /*ToString()*/
+                    + " Ox: " + Grids[0].ToString() + " Oy: " + Grids[1].ToString();
             }
 
             public override string ToLongString()
             {
-                return "alalalla";
+                string ret = "";
+
+                for (int i = 0; i < Grids[0].Num; i++)
+                {
+                    for (int j = 0; j < Grids[1].Num; j++)
+                    {
+                        ret = ret + ("Coord: ( " + (Grids[0].Step * (i + 1)).ToString() + ", " + (Grids[1].Step * (j + 1)).ToString()
+                            + ") Value: " + Node[i, j].ToString());
+                    }
+                    ret = ret + "\n";
+                }
+
+                return "Type: 2DataOnGrid Base: Info: " + Info.ToString() + " Freq: " + Freq.ToString() /*ToString()*/
+                    + " Ox: " + Grids[0].ToString() + " Oy: " + Grids[1].ToString() + "\n" + ret;
             }
         }
 
@@ -317,6 +331,14 @@ namespace Lab1_core
             V2MainCollection mainCollection = new V2MainCollection();
             mainCollection.AddDefaults();
             Console.WriteLine(mainCollection.ToString());
+            // Console.WriteLine(mainCollection.ToLongString());
+
+            /* test */
+            Grid1D x = new Grid1D(10, 10);
+            Grid1D y = new Grid1D(5, 10);
+            V2DataOnGrid test = new V2DataOnGrid("test", 100, x, y);
+            test.initRandom(0, 100);
+            Console.WriteLine(test.ToLongString());
         }
     }
 }
