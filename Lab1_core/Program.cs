@@ -65,25 +65,7 @@ namespace Lab1_core
 
         class V2DataOnGrid : V2Data
         {
-
-            //public Grid1D Ox { get; set; }
-            //public Grid1D Oy { get; set; }
-
-            public Grid1D[] Grids { get; set; } /* { get; AppDomainSetup; } */
-
-            /*
-            public Grid1D Ox 
-            { 
-                get { return grids[0];  }
-                set { grids[0] = value; } 
-            }
-
-            public Grid1D Oy
-            {
-                get { return grids[1]; }
-                set { grids[1] = value; }
-            }
-            */
+            public Grid1D[] Grids { get; set; }
 
             public Complex[,] Node { get; set; }
 
@@ -108,13 +90,6 @@ namespace Lab1_core
                 }
             } 
 
-            /*
-            public V2DataCollection()
-            {
-
-            }
-            */
-
             public static explicit operator V2DataCollection(V2DataOnGrid val)
             {
                 V2DataCollection ret = new V2DataCollection(val.Info, val.Freq);
@@ -134,7 +109,7 @@ namespace Lab1_core
             {
                 int N = Grids[0].Num * Grids[1].Num;
                 double sum = 0;
-                //Complex[] ret = new Complex[]();
+
                 for (int i = 0; i < Grids[0].Num; i++)
                 {
                     for (int j = 0; j < Grids[1].Num; j++)
@@ -207,20 +182,11 @@ namespace Lab1_core
             }
 
             public void initRandom(int nItems, float xmax, float ymax, double minValue, double maxValue)
-            {
-                //DataItem item = new DataItem();
-                //Vector2 bufVec;
-                //Complex bufCompl;
-
+            { 
                 dataItems = new List<DataItem>();
                 Random rnd = new Random();
                 for (int i = 0; i < nItems; i++)
-                {
-                    //bufVec.X = (float)rnd.NextDouble() * xmax;
-                    //bufVec.Y = (float)rnd.NextDouble() * ymax;
-                    //item.Vector = new Vector2((float)rnd.NextDouble() * xmax, (float)rnd.NextDouble() * ymax);
-                    //item.Complex
-
+                { 
                     dataItems.Add(new DataItem()
                     {
                         Vector = new Vector2((float)rnd.NextDouble() * xmax, (float)rnd.NextDouble() * ymax),
@@ -231,7 +197,6 @@ namespace Lab1_core
 
             public override Complex[] NearAverage(float eps)
             {
-                //throw new NotImplementedException();
                 int count = 0;
                 double sum = 0;
                 foreach(DataItem item in dataItems)
@@ -353,20 +318,10 @@ namespace Lab1_core
             {
                 return ((IEnumerable)v2Datas).GetEnumerator();
             }
-
-            //public IEnumerator GetEnumerator()
-            //{
-            //return ((IEnumerable)v2Datas).GetEnumerator();
-            //}
         }
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-
-            //V2DataCollection dataCollection = new V2DataCollection("info", 1.23);
-            //dataCollection.
-
             /* 1 */
             Grid1D x = new Grid1D(10, 10);
             Grid1D y = new Grid1D(5, 10);
@@ -379,14 +334,13 @@ namespace Lab1_core
             V2DataCollection collection = (V2DataCollection)test;
             Console.WriteLine(collection.ToLongString());
 
-
             /* 2 */
             V2MainCollection mainCollection = new V2MainCollection();
             mainCollection.AddDefaults();
             Console.WriteLine(mainCollection.ToString());
 
             /* 3 */
-            Complex[] c;// = new Complex[];
+            Complex[] c;
             foreach (V2Data item in mainCollection)
             {
                 c = item.NearAverage(10);
@@ -395,24 +349,6 @@ namespace Lab1_core
                     Console.WriteLine(c[i].ToString());
                 }
             } 
-
-            // Console.WriteLine(mainCollection.ToLongString());
-
-            /* test */
-            /*
-            Grid1D x = new Grid1D(10, 10);
-            Grid1D y = new Grid1D(5, 10);
-            V2DataOnGrid test = new V2DataOnGrid("test", 100, x, y);
-            test.initRandom(0, 100);
-            Console.WriteLine(test.ToLongString());
-            */
-
-            /*test2*/
-            /*
-            V2DataCollection test2 = new V2DataCollection("test2", 100);
-            test2.initRandom(10, 100, 100, 0, 100);
-            Console.WriteLine(test2.ToLongString());
-            */
         }
     }
 }
