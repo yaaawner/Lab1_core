@@ -254,7 +254,15 @@ namespace Lab1_core
 
             public override string ToLongString()
             {
-                return "lalalala";
+                string ret = "";
+
+                foreach (DataItem item in dataItems)
+                {
+                    ret += (item.ToString() + " ");
+                }
+
+                return "Type: V2DataCollection Base: info " + Info + " freq " + Freq.ToString()
+                        + " Count: " + dataItems.Count.ToString() + "\n" + ret;
             }
         }
 
@@ -340,6 +348,11 @@ namespace Lab1_core
             V2DataOnGrid test = new V2DataOnGrid("test", 100, x, y);
             test.initRandom(0, 100);
             Console.WriteLine(test.ToLongString());
+
+            /*test2*/
+            V2DataCollection test2 = new V2DataCollection("test2", 100);
+            test2.initRandom(10, 100, 100, 0, 100);
+            Console.WriteLine(test2.ToLongString());
         }
     }
 }
