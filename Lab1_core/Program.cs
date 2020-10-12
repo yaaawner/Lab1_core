@@ -95,7 +95,11 @@ namespace Lab1_core
                     Console.WriteLine(c[i].ToString());
                 }
                 count++;
-            } 
+            }
+
+            /* test remove */
+            mainCollection.Remove("data info2", 2);
+            Console.WriteLine(mainCollection.ToString());
         }
     }
 }

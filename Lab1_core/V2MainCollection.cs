@@ -20,14 +20,16 @@ namespace Lab1_core
         public bool Remove(string id, double w)
         {
             bool flag = false;
-            foreach (V2Data data in v2Datas)
+
+            for (int i = 0; i < v2Datas.Count; i++)
             {
-                if (data.Freq == w && data.Info == id)
+                if (v2Datas[i].Freq == w && v2Datas[i].Info == id)
                 {
-                    v2Datas.Remove(data);
+                    v2Datas.Remove(v2Datas[i]);
                     flag = true;
                 }
             }
+            
             return flag;
         }
 
@@ -41,7 +43,7 @@ namespace Lab1_core
 
             for (int i = 0; i < 3; i++)
             {
-                grid[i] = new V2DataOnGrid("data info" + i.ToString(), i, Ox, Oy);
+                grid[i] = new V2DataOnGrid("data info2"/*+ i.ToString()*/, 2, Ox, Oy);     // test i = 2
                 collections[i] = new V2DataCollection("collection info" + i.ToString(), i);
             }
 
