@@ -21,12 +21,16 @@ namespace Lab1_core
         {
             bool flag = false;
 
-            for (int i = 0; i < v2Datas.Count; i++)
+            for (int i = 0; i < v2Datas.Count;)
             {
                 if (v2Datas[i].Freq == w && v2Datas[i].Info == id)
                 {
                     v2Datas.Remove(v2Datas[i]);
                     flag = true;
+                }
+                else
+                {
+                    i++;
                 }
             }
             
